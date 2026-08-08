@@ -66,3 +66,20 @@ def test_runner_frames_ok(tmp_path):
     assert len(list(folder.glob("*.png"))) >= 1
     log = out / "universal-converter.log"
     assert "clip.mp4" in log.read_text(encoding="utf-8")
+
+
+def test_runner_pdf_png_pages_ok(tmp_path):
+    import fitz
+
+    doc = fitz.open()
+    doc.new_page()
+    doc.new_page()
+    src = tmp_path / "two.pdf"
+    doc.save(src)
+    doc.close()
+    out = tmp_path / "out"
+    results = Runner().run([Job(src=src, target_ext="png", category="Documents")], out)
+    assert results[0][1] is None
+    folder = results[0][0]
+    assert folder.exists() and folder.is_dir()
+    assert len(list(folder.glob("*.png"))) == 2

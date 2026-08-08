@@ -41,6 +41,9 @@ class Runner:
                 if job.target_ext == "frames":
                     target = out_dir / f"{job.src.stem}_frames"
                     self.converters[job.category][src_ext]["frames"](job.src, target)
+                elif job.category == "Documents" and job.target_ext == "png":
+                    target = out_dir / f"{job.src.stem}_pages"
+                    self.converters[job.category][src_ext][job.target_ext](job.src, target)
                 else:
                     target = unique_output_path(out_dir, job.src, job.target_ext)
                     fn = self.converters[job.category][src_ext][job.target_ext]

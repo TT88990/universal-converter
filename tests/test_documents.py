@@ -13,7 +13,7 @@ from omni.documents import (
     md_to_html,
     pdf_to_docx,
     pdf_to_md,
-    pdf_to_png,
+    pdf_to_png_pages,
     pdf_to_txt,
     text_to_html,
     text_to_pdf,
@@ -27,6 +27,16 @@ def make_pdf(path: Path):
     doc = fitz.open()
     page = doc.new_page()
     page.insert_text((72, 72), SAMPLE_TEXT)
+    doc.save(path)
+    doc.close()
+    return path
+
+
+def make_pdf_pages(path: Path, n: int):
+    doc = fitz.open()
+    for _ in range(n):
+        page = doc.new_page()
+        page.insert_text((72, 72), SAMPLE_TEXT)
     doc.save(path)
     doc.close()
     return path
@@ -99,11 +109,12 @@ def test_md_and_text_to_html(tmp_path):
     text_to_html(tmp_path / "out.html", tmp_path / "out2.html")
 
 
-def test_pdf_to_png(tmp_path):
-    src = make_pdf(tmp_path / "in.pdf")
-    dst = tmp_path / "out.png"
-    pdf_to_png(src, dst)
-    with Image.open(dst) as img:
+def test_pdf_to_png_pages_renders_every_page(tmp_path):
+    src = make_pdf_pages(tmp_path / "two.pdf", 2)
+    out_dir = pdf_to_png_pages(src, tmp_path / "pages")
+    pngs = sorted(out_dir.glob("*.png"))
+    assert len(pngs) == 2
+    with Image.open(pngs[0]) as img:
         assert img.size[0] > 100
 
 

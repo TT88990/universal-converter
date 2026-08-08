@@ -49,7 +49,7 @@ CONVERTERS: dict[str, dict[str, dict[str, object]]] = {
     }
     | {"svg": {"png": images.svg_to_png}},
     "Documents": {
-        "pdf": {"txt": documents.pdf_to_txt, "docx": documents.pdf_to_docx, "md": documents.pdf_to_md, "png": documents.pdf_to_png},
+        "pdf": {"txt": documents.pdf_to_txt, "docx": documents.pdf_to_docx, "md": documents.pdf_to_md, "png": documents.pdf_to_png_pages},
         "docx": {"txt": documents.docx_to_txt, "md": documents.docx_to_md, "pdf": documents.docx_to_pdf},
         "txt": {"docx": documents.txt_to_docx, "pdf": documents.text_to_pdf, "html": documents.text_to_html},
         "md": {"html": documents.md_to_html},

@@ -30,23 +30,24 @@ def _render_text_pdf(text: str, dst: Path) -> None:
     doc.close()
 
 
-def pdf_to_png(src, dst) -> None:
-    src_path, dst_path = Path(src), Path(dst)
+def pdf_to_png_pages(src, dst_dir) -> Path:
+    src_path, dir_path = Path(src), Path(dst_dir)
     _require_input(src_path)
     try:
         doc = fitz.open(src_path)
         try:
             if doc.page_count == 0:
                 raise ConversionError("PDF has no pages")
-            page = doc[0]
-            pix = page.get_pixmap(dpi=150)
-            pix.save(str(dst_path))
+            dir_path.mkdir(parents=True, exist_ok=True)
+            for i, page in enumerate(doc, start=1):
+                page.get_pixmap(dpi=150).save(str(dir_path / f"page_{i:04d}.png"))
         finally:
             doc.close()
     except ConversionError:
         raise
     except Exception as exc:
         raise ConversionError(f"PDF to PNG failed: {exc}") from exc
+    return dir_path
 
 
 def pdf_to_txt(src, dst) -> None:
