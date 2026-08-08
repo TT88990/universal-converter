@@ -14,6 +14,7 @@ Universal offline file converter for Windows: images, documents, audio, video, t
 
 **Documents**
 - PDF ↔ TXT / DOCX / Markdown
+- PDF → PNG (first page rendered)
 - DOCX → PDF / TXT / MD, TXT → DOCX / PDF / HTML, MD → HTML
 
 **Audio**
@@ -21,7 +22,8 @@ Universal offline file converter for Windows: images, documents, audio, video, t
 
 **Video**
 - Convert between MP4, AVI, MKV, MOV, WebM and GIF (animated)
-- Extract frames from any video as PNG sequence
+- Extract the audio track as MP3, WAV, FLAC, OGG, OPUS, M4A or WMA
+- Extract frames from any video as a PNG frame sequence
 
 **Text**
 - Re-encode TXT between UTF-8, UTF-16, UTF-16-LE, UTF-16-BE, ASCII and Latin-1
@@ -29,6 +31,7 @@ Universal offline file converter for Windows: images, documents, audio, video, t
 
 **Hash**
 - Compute MD5, SHA-1, SHA-224, SHA-256, SHA-384, SHA-512, SHA3-256, SHA3-512, BLAKE2b and CRC32 for both text input and files
+- One-click copy button for every hash value
 
 **GUI**
 - Seven tabs (Images, Documents, Audio, Video, Text, Hash, Formats) with drag & drop
@@ -55,7 +58,7 @@ Universal offline file converter for Windows: images, documents, audio, video, t
 
 | From | To |
 |---|---|
-| pdf | txt, docx, md |
+| pdf | txt, docx, md, png |
 | docx | txt, md, pdf |
 | txt | docx, pdf, html |
 | md | html |
@@ -76,18 +79,18 @@ Universal offline file converter for Windows: images, documents, audio, video, t
 
 | From | To |
 |---|---|
-| mp4 | avi, mkv, mov, webm, gif |
-| avi | mp4, mkv, mov, webm, gif |
-| mkv | mp4, avi, mov, webm, gif |
-| mov | mp4, avi, mkv, webm, gif |
-| webm | mp4, avi, mkv, mov, gif |
-| gif | mp4, webm |
+| avi | flac, frames, gif, m4a, mkv, mov, mp3, mp4, ogg, opus, wav, webm, wma |
+| gif | flac, frames, m4a, mp3, mp4, ogg, opus, wav, webm, wma |
+| mkv | flac, frames, gif, m4a, mov, mp3, mp4, ogg, opus, wav, webm, wma |
+| mov | flac, frames, gif, m4a, mkv, mp3, mp4, ogg, opus, wav, webm, wma |
+| mp4 | avi, flac, frames, gif, m4a, mkv, mov, mp3, ogg, opus, wav, webm, wma |
+| webm | avi, flac, frames, gif, m4a, mkv, mov, mp3, mp4, ogg, opus, wav, wma |
 
 **Text**
 
 | From | To |
 |---|---|
-| txt | utf-16, utf-16-le, utf-16-be, ascii, latin-1, base64, hex |
+| txt | utf-16, utf-16-le, utf-16-be, ascii, latin-1, base64, hex, base64-decode, hex-decode |
 | md | html |
 
 ## Install
