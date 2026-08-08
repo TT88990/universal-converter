@@ -20,7 +20,7 @@ from omni.documents import (
     txt_to_docx,
 )
 
-SAMPLE_TEXT = "Hello OmniConvert!\nSecond line with ünicode."
+SAMPLE_TEXT = "Hello UniversalConverter!\nSecond line with ünicode."
 
 
 def make_pdf(path: Path):
@@ -34,7 +34,7 @@ def make_pdf(path: Path):
 
 def make_docx(path: Path):
     d = DocxDocument()
-    d.add_paragraph("Hello OmniConvert!")
+    d.add_paragraph("Hello UniversalConverter!")
     d.add_paragraph("Second line with ünicode.")
     d.save(path)
     return path
@@ -44,7 +44,7 @@ def test_pdf_to_txt(tmp_path):
     src = make_pdf(tmp_path / "in.pdf")
     dst = tmp_path / "out.txt"
     pdf_to_txt(src, dst)
-    assert "Hello OmniConvert" in dst.read_text(encoding="utf-8")
+    assert "Hello UniversalConverter" in dst.read_text(encoding="utf-8")
 
 
 def test_pdf_to_docx(tmp_path):
@@ -53,7 +53,7 @@ def test_pdf_to_docx(tmp_path):
     pdf_to_docx(src, dst)
     docx_to_txt(dst, tmp_path / "round.txt")
     text = (tmp_path / "round.txt").read_text(encoding="utf-8")
-    assert "Hello OmniConvert" in text
+    assert "Hello UniversalConverter" in text
 
 
 def test_docx_to_txt(tmp_path):
@@ -80,7 +80,7 @@ def test_txt_to_docx(tmp_path):
     src.write_text(SAMPLE_TEXT, encoding="utf-8")
     txt_to_docx(src, tmp_path / "out.docx")
     d = DocxDocument(str(tmp_path / "out.docx"))
-    assert any("Hello OmniConvert" in p.text for p in d.paragraphs)
+    assert any("Hello UniversalConverter" in p.text for p in d.paragraphs)
 
 
 def test_text_to_pdf(tmp_path):

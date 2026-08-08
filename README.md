@@ -1,4 +1,6 @@
-# OmniConvert
+# UniversalConverter
+
+*Formerly known as OmniConvert.*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.13](https://img.shields.io/badge/Python-3.13-blue.svg)](pyproject.toml)
@@ -95,7 +97,7 @@ Universal offline file converter for Windows: images, documents, audio, video, t
 
 ## Install
 
-Download the latest `OmniConvert.exe` from the [Releases](https://github.com/TT88990/omni-convert/releases) page. It is a single-file portable executable — no installation, no Python, no ffmpeg needed.
+Download the latest `UniversalConverter.exe` from the [Releases](https://github.com/TT88990/universal-converter/releases) page. It is a single-file portable executable — no installation, no Python, no ffmpeg needed.
 
 ## Build from source
 
@@ -108,11 +110,11 @@ py -3 -m venv .venv
 powershell -ExecutionPolicy Bypass -File .\build.ps1
 ```
 
-The standalone EXE (with bundled ffmpeg) is written to `dist\OmniConvert.exe`.
+The standalone EXE (with bundled ffmpeg) is written to `dist\UniversalConverter.exe`.
 
 ## Usage
 
-1. Open OmniConvert and pick a category tab (e.g. Images).
+1. Open UniversalConverter and pick a category tab (e.g. Images).
 2. Add files via the file picker or drag & drop.
 3. Choose the target format.
 4. Click **Convert** — results are written to the `output\` folder next to your input files (or the folder you select), with a per-file log and progress bar.

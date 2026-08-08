@@ -176,7 +176,7 @@ class App(DnDApp):
     def __init__(self):
         ctk.set_appearance_mode("dark")
         super().__init__()
-        self.title("OmniConvert")
+        self.title("UniversalConverter")
         self.geometry("1100x700")
         self.tabs = ctk.CTkTabview(self)
         self.tabs.pack(fill="both", expand=True)

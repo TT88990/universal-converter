@@ -64,5 +64,5 @@ def test_runner_frames_ok(tmp_path):
     folder = results[0][0]
     assert folder.exists() and folder.is_dir()
     assert len(list(folder.glob("*.png"))) >= 1
-    log = out / "omni-convert.log"
+    log = out / "universal-converter.log"
     assert "clip.mp4" in log.read_text(encoding="utf-8")

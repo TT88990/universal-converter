@@ -24,7 +24,7 @@ def _render_text_pdf(text: str, dst: Path) -> None:
         chunk = "\n".join(lines[start : start + lines_per_page])
         page.insert_textbox(fitz.Rect(72, 72, 540, 780), chunk, fontsize=11)
     doc.set_metadata(
-        {"title": "OmniConvert", "author": "OmniConvert", "creator": "OmniConvert", "producer": "OmniConvert"}
+        {"title": "UniversalConverter", "author": "UniversalConverter", "creator": "UniversalConverter", "producer": "UniversalConverter"}
     )
     doc.save(dst)
     doc.close()

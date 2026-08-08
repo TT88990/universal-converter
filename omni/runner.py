@@ -52,7 +52,7 @@ class Runner:
                 error = str(exc)
             results.append((target, error))
             status = "ok" if error is None else "error"
-            with open(out_dir / "omni-convert.log", "a", encoding="utf-8") as log:
+            with open(out_dir / "universal-converter.log", "a", encoding="utf-8") as log:
                 log.write(f"{datetime.now():%Y-%m-%d %H:%M:%S} [{status}] {job.src} -> {target}: {error or ''}\n")
             if on_progress:
                 on_progress(done, total, job.src.name, "done" if error is None else f"error: {error}")
