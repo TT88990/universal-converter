@@ -87,8 +87,12 @@ class ConvertTab(ctk.CTkFrame):
         self.progress.set(0)
 
         def work():
-            Runner().run(jobs, out, on_progress=self._on_progress)
-            self.after(0, lambda: self.convert_btn.configure(state="normal"))
+            try:
+                Runner().run(jobs, out, on_progress=self._on_progress)
+            except Exception as exc:
+                self.after(0, lambda: self._log(f"error: {exc}"))
+            finally:
+                self.after(0, lambda: self.convert_btn.configure(state="normal"))
 
         threading.Thread(target=work, daemon=True).start()
 
@@ -103,23 +107,32 @@ class ConvertTab(ctk.CTkFrame):
 class HashTab(ctk.CTkFrame):
     def __init__(self, master):
         super().__init__(master)
+        self._file_mode = False
         self.input = ctk.CTkTextbox(self, height=140, width=700)
         self.input.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
         ctk.CTkButton(self, text="Load File...", command=self._load_file).grid(row=1, column=0, sticky="w", padx=10)
         self.results = ctk.CTkTextbox(self, height=260, width=700)
         self.results.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+        self.input.bind("<KeyRelease>", self._on_key)
+        self._hash()
+
+    def _on_key(self, event):
+        self._file_mode = False
         self._hash()
 
     def _load_file(self):
         p = filedialog.askopenfilename()
         if p:
+            self._file_mode = True
             self.input.delete("1.0", "end")
             self.input.insert("1.0", Path(p).name + " (file hashed)")
             self._hash_from_file(Path(p))
 
     def _hash(self):
+        if self._file_mode:
+            return
         text = self.input.get("1.0", "end").strip()
-        if not text or text.endswith("(file hashed)"):
+        if not text:
             return
         self._show(hash_text(text))
 
@@ -147,6 +160,7 @@ class FormatsTab(ctk.CTkScrollableFrame):
 
 class App(DnDApp):
     def __init__(self):
+        ctk.set_appearance_mode("dark")
         super().__init__()
         self.title("OmniConvert")
         self.geometry("1100x700")
