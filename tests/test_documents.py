@@ -3,6 +3,7 @@ from pathlib import Path
 import fitz
 import pytest
 from docx import Document as DocxDocument
+from PIL import Image
 
 from omni.errors import ConversionError
 from omni.documents import (
@@ -12,6 +13,7 @@ from omni.documents import (
     md_to_html,
     pdf_to_docx,
     pdf_to_md,
+    pdf_to_png,
     pdf_to_txt,
     text_to_html,
     text_to_pdf,
@@ -95,6 +97,14 @@ def test_md_and_text_to_html(tmp_path):
     html = (tmp_path / "out.html").read_text(encoding="utf-8")
     assert "<h1" in html
     text_to_html(tmp_path / "out.html", tmp_path / "out2.html")
+
+
+def test_pdf_to_png(tmp_path):
+    src = make_pdf(tmp_path / "in.pdf")
+    dst = tmp_path / "out.png"
+    pdf_to_png(src, dst)
+    with Image.open(dst) as img:
+        assert img.size[0] > 100
 
 
 def test_missing_source_raises(tmp_path):

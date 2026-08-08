@@ -20,6 +20,21 @@ def test_mp4_targets():
     assert {"avi", "webm", "gif", "mov"} <= set(t)
 
 
+def test_video_audio_and_frames_targets():
+    assert "frames" in VALID_TARGETS("Video", "mp4")
+    assert "mp3" in VALID_TARGETS("Video", "gif")
+    assert {"wav", "flac", "ogg", "opus", "m4a", "wma"} <= set(VALID_TARGETS("Video", "webm"))
+
+
+def test_text_decode_targets():
+    assert "base64-decode" in VALID_TARGETS("Text", "txt")
+    assert "hex-decode" in VALID_TARGETS("Text", "txt")
+
+
+def test_pdf_png_target():
+    assert "png" in VALID_TARGETS("Documents", "pdf")
+
+
 def test_wav_targets():
     t = VALID_TARGETS("Audio", "wav")
     assert {"mp3", "flac", "opus"} <= set(t)

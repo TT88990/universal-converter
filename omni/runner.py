@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
 from typing import Callable
 
@@ -33,18 +34,26 @@ class Runner:
         results: list[tuple[Path, str | None]] = []
         total = len(jobs)
         for done, job in enumerate(jobs, start=1):
-            target = unique_output_path(out_dir, job.src, job.target_ext)
+            target: Path
             error: str | None = None
             try:
                 src_ext = job.src.suffix.lower().lstrip(".")
-                fn = self.converters[job.category][src_ext][job.target_ext]
-                if job.target_ext == "pdf" and job.category == "Images":
-                    fn([job.src], target)
+                if job.target_ext == "frames":
+                    target = out_dir / f"{job.src.stem}_frames"
+                    self.converters[job.category][src_ext]["frames"](job.src, target)
                 else:
-                    fn(job.src, target)
+                    target = unique_output_path(out_dir, job.src, job.target_ext)
+                    fn = self.converters[job.category][src_ext][job.target_ext]
+                    if job.target_ext == "pdf" and job.category == "Images":
+                        fn([job.src], target)
+                    else:
+                        fn(job.src, target)
             except Exception as exc:
                 error = str(exc)
             results.append((target, error))
+            status = "ok" if error is None else "error"
+            with open(out_dir / "omni-convert.log", "a", encoding="utf-8") as log:
+                log.write(f"{datetime.now():%Y-%m-%d %H:%M:%S} [{status}] {job.src} -> {target}: {error or ''}\n")
             if on_progress:
                 on_progress(done, total, job.src.name, "done" if error is None else f"error: {error}")
         return results

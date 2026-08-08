@@ -111,8 +111,9 @@ class HashTab(ctk.CTkFrame):
         self.input = ctk.CTkTextbox(self, height=140, width=700)
         self.input.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
         ctk.CTkButton(self, text="Load File...", command=self._load_file).grid(row=1, column=0, sticky="w", padx=10)
-        self.results = ctk.CTkTextbox(self, height=260, width=700)
+        self.results = ctk.CTkScrollableFrame(self, height=260, width=700)
         self.results.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="nsew")
+        self.results.grid_columnconfigure(1, weight=1)
         self.input.bind("<KeyRelease>", self._on_key)
         self._hash()
 
@@ -139,10 +140,23 @@ class HashTab(ctk.CTkFrame):
     def _hash_from_file(self, path: Path):
         self._show(hash_file(path))
 
+    def _copy(self, value: str):
+        self.clipboard_clear()
+        self.clipboard_append(value)
+
     def _show(self, digests: dict):
-        self.results.delete("1.0", "end")
-        for algo, value in digests.items():
-            self.results.insert("end", f"{algo:10s} {value}\n")
+        for child in self.results.winfo_children():
+            child.destroy()
+        for row, (algo, value) in enumerate(digests.items()):
+            ctk.CTkLabel(self.results, text=algo, width=90, anchor="w").grid(
+                row=row, column=0, sticky="w", padx=(8, 0), pady=3
+            )
+            ctk.CTkLabel(self.results, text=value, anchor="w", wraplength=520).grid(
+                row=row, column=1, sticky="ew", padx=8, pady=3
+            )
+            ctk.CTkButton(self.results, text="Copy", width=60, command=lambda v=value: self._copy(v)).grid(
+                row=row, column=2, padx=(0, 8), pady=3
+            )
 
 
 class FormatsTab(ctk.CTkScrollableFrame):

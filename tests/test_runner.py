@@ -3,11 +3,22 @@ from pathlib import Path
 
 from PIL import Image
 
+from omni.ffmpeg import run_ffmpeg
 from omni.runner import Job, Runner, unique_output_path
 
 
 def make_png(path: Path):
     Image.new("RGBA", (32, 32), (10, 200, 30, 255)).save(path, "PNG")
+    return path
+
+
+def make_mp4(path: Path, seconds=2):
+    run_ffmpeg(
+        [
+            "-f", "lavfi", "-i", f"testsrc=duration={seconds}:size=320x240:rate=15",
+            "-c:v", "libx264", "-pix_fmt", "yuv420p", "-an", str(path),
+        ]
+    )
     return path
 
 
@@ -43,3 +54,15 @@ def test_runner_reports_progress_and_error(tmp_path):
     assert calls[-1][0] == 2 and calls[-1][1] == 2
     assert results[0][1] is not None
     assert results[1][1] is None
+
+
+def test_runner_frames_ok(tmp_path):
+    src = make_mp4(tmp_path / "clip.mp4")
+    out = tmp_path / "out"
+    results = Runner().run([Job(src=src, target_ext="frames", category="Video")], out)
+    assert results[0][1] is None
+    folder = results[0][0]
+    assert folder.exists() and folder.is_dir()
+    assert len(list(folder.glob("*.png"))) >= 1
+    log = out / "omni-convert.log"
+    assert "clip.mp4" in log.read_text(encoding="utf-8")

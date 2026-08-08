@@ -48,3 +48,12 @@ def extract_frames(src: str | Path, out_dir: str | Path, fps: float = 1.0) -> li
 
 def extract_audio(src: str | Path, dst: str | Path) -> None:
     _extract_audio(src, dst)
+
+
+def extract_frames_job(src_video: str | Path, out_dir: str | Path) -> Path:
+    src_path, out_path = Path(src_video), Path(out_dir)
+    if not src_path.is_file():
+        raise ConversionError(f"Input file not found: {src_path}")
+    out_path.mkdir(parents=True, exist_ok=True)
+    extract_frames(src_path, out_path, fps=1.0)
+    return out_path
