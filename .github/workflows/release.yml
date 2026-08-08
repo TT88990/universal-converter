@@ -1,0 +1,22 @@
+name: Release
+
+# Primary build path is LOCAL (see build.ps1):
+#   powershell -ExecutionPolicy Bypass -File .\build.ps1
+# then publish dist\OmniConvert.exe with the release tooling.
+#
+# A self-hosted Windows runner may be added later, e.g.:
+# on:
+#   workflow_dispatch:
+# jobs:
+#   build:
+#     runs-on: [self-hosted, windows]
+#     steps:
+#       - uses: actions/checkout@v4
+#       - run: powershell -ExecutionPolicy Bypass -File .\build.ps1
+#       - uses: actions/upload-artifact@v4
+#         with:
+#           name: OmniConvert-exe
+#           path: dist/OmniConvert.exe
+
+on:
+  workflow_dispatch:
