@@ -36,7 +36,7 @@ Universal offline file converter for Windows: images, documents, audio, video, t
 - One-click copy button for every hash value
 
 **GUI**
-- Seven tabs (Images, Documents, Audio, Video, Text, Hash, Formats) with drag & drop
+- Seven pages reachable from the sidebar (Images, Documents, Audio, Video, Text, Hash, Formats) with drag & drop
 - Batch conversion with live progress and per-file log
 - Fully offline — no network or cloud services used
 
@@ -114,7 +114,7 @@ The standalone EXE (with bundled ffmpeg) is written to `dist\UniversalConverter.
 
 ## Usage
 
-1. Open UniversalConverter and pick a category tab (e.g. Images).
+1. Open UniversalConverter and pick a category in the sidebar (e.g. Images).
 2. Add files via the file picker or drag & drop.
 3. Choose the target format.
 4. Click **Convert** — results are written to the `output\` folder next to your input files (or the folder you select), with a per-file log and progress bar.

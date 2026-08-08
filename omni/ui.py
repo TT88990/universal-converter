@@ -6,6 +6,7 @@ import customtkinter as ctk
 from tkinterdnd2 import DND_FILES, TkinterDnD
 
 import omni.theme as theme
+from omni import APP_VERSION
 from omni.icons import ICON_KINDS, photoicon
 from omni.hashgen import hash_file, hash_text
 from omni.matrix import CATEGORIES, VALID_TARGETS
@@ -37,7 +38,7 @@ class Sidebar(ctk.CTkFrame):
         self._nav.pack(fill="both", expand=True, padx=8, pady=8)
         for name in CATEGORY_ORDER:
             self.buttons[name] = self._make_button(name)
-        ctk.CTkLabel(self, text="v0.2.0  MIT",
+        ctk.CTkLabel(self, text=f"v{APP_VERSION}  MIT",
                      font=(theme.THEME["fonts"]["app"], theme.THEME["sizes"]["small"]),
                      text_color=theme.THEME["text"]["muted"]).pack(side="bottom", pady=12)
 
@@ -104,7 +105,7 @@ class ConverterPage(ctk.CTkFrame):
         self.target_menu = ctk.CTkOptionMenu(actions, values=[], variable=self.target, state="disabled")
         self.target_menu.pack(side="left")
         self.convert_btn = ctk.CTkButton(actions, text="Convert", width=130,
-                                         font=(theme.THEME["fonts"]["app"], 14, "bold"),
+                                         font=(theme.THEME["fonts"]["app"], theme.THEME["sizes"]["cta"], "bold"),
                                          fg_color=self.accent, hover_color=self.accent,
                                          text_color=theme.THEME["text"]["on_accent"],
                                          command=self._convert)
@@ -287,11 +288,11 @@ class FormatsPage(ctk.CTkFrame):
                 for src, targets in mapping.items()
             ]
             visible = [ln for ln in lines if not q or q in ln.lower()
-                       or q == category.lower()]
+                       or q in category.lower()]
             if not visible and q:
                 continue
             ctk.CTkLabel(self.body, text=f"=== {category} ===",
-                         font=(theme.THEME["fonts"]["app"], 15, "bold"),
+                         font=(theme.THEME["fonts"]["app"], theme.THEME["sizes"]["section"], "bold"),
                          text_color=theme.accent(category)).grid(row=row, column=0, sticky="w", pady=(10, 2))
             row += 1
             for line in visible:

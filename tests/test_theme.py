@@ -1,4 +1,3 @@
-import pytest
 import omni.theme as theme
 from omni.matrix import CATEGORIES
 

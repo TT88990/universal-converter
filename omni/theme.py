@@ -12,7 +12,7 @@ THEME = {
     },
     "accent": "#3B82F6",
     "fonts": {"app": "Segoe UI", "mono": "Consolas"},
-    "sizes": {"brand": 19, "page": 24, "body": 13, "small": 11, "mono": 12},
+    "sizes": {"brand": 19, "page": 24, "body": 13, "small": 11, "mono": 12, "cta": 14, "section": 15},
     "radius": 10,
     "spacing": 10,
 }
