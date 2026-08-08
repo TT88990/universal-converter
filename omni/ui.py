@@ -1,19 +1,61 @@
 import threading
 from pathlib import Path
-from tkinter import filedialog, messagebox
+from tkinter import filedialog
 
 import customtkinter as ctk
 from tkinterdnd2 import DND_FILES, TkinterDnD
 
+import omni.theme as theme
+from omni.icons import ICON_KINDS, photoicon
 from omni.hashgen import hash_file, hash_text
 from omni.matrix import CATEGORIES, VALID_TARGETS
 from omni.runner import Job, Runner
+
+CATEGORY_ORDER = ("Images", "Documents", "Audio", "Video", "Text", "Hash", "Formats")
 
 
 class DnDApp(ctk.CTk, TkinterDnD.DnDWrapper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.TkdndVersion = TkinterDnD._require(self)
+
+
+class Sidebar(ctk.CTkFrame):
+    def __init__(self, master, on_select=None):
+        super().__init__(master, width=220, fg_color=theme.THEME["surfaces"]["sidebar"])
+        self.on_select = on_select
+        self.buttons: dict = {}
+        brand = ctk.CTkFrame(self, fg_color="transparent")
+        brand.pack(fill="x", padx=12, pady=(16, 8))
+        ctk.CTkLabel(brand, text="UniversalConverter",
+                     font=(theme.THEME["fonts"]["app"], theme.THEME["sizes"]["brand"], "bold"),
+                     text_color=theme.THEME["text"]["primary"]).pack(anchor="w")
+        ctk.CTkLabel(brand, text="Offline converter",
+                     font=(theme.THEME["fonts"]["app"], theme.THEME["sizes"]["small"]),
+                     text_color=theme.THEME["text"]["muted"]).pack(anchor="w")
+        self._nav = ctk.CTkFrame(self, fg_color="transparent")
+        self._nav.pack(fill="both", expand=True, padx=8, pady=8)
+        for name in CATEGORY_ORDER:
+            self.buttons[name] = self._make_button(name)
+        ctk.CTkLabel(self, text="v0.2.0  MIT",
+                     font=(theme.THEME["fonts"]["app"], theme.THEME["sizes"]["small"]),
+                     text_color=theme.THEME["text"]["muted"]).pack(side="bottom", pady=12)
+
+    def _make_button(self, name):
+        btn = ctk.CTkButton(self._nav, text=name,
+                            image=photoicon(ICON_KINDS[name], theme.accent(name)),
+                            compound="left", anchor="w", height=40, corner_radius=8,
+                            fg_color="transparent", text_color=theme.THEME["text"]["primary"],
+                            hover_color=theme.THEME["surfaces"]["surface"],
+                            command=lambda n=name: self.on_select(n) if self.on_select else None)
+        btn.pack(fill="x", pady=2)
+        return btn
+
+    def select(self, name):
+        for n, btn in self.buttons.items():
+            btn.configure(fg_color=theme.THEME["surfaces"]["surface"]
+                          if n == name else "transparent",
+                          text_color=theme.accent(n) if n == name else theme.THEME["text"]["primary"])
 
 
 class ConvertTab(ctk.CTkFrame):
