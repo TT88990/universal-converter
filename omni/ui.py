@@ -9,7 +9,7 @@ import omni.theme as theme
 from omni import APP_VERSION
 from omni.icons import ICON_KINDS, photoicon
 from omni.hashgen import hash_file, hash_text
-from omni.matrix import CATEGORIES, VALID_TARGETS
+from omni.matrix import CATEGORIES, VALID_TARGETS, filetypes_for
 from omni.runner import Job, Runner
 
 CATEGORY_ORDER = ("Images", "Documents", "Audio", "Video", "Text", "Hash", "Formats")
@@ -88,7 +88,7 @@ class ConverterPage(ctk.CTkFrame):
         drop = ctk.CTkFrame(self, fg_color=theme.THEME["surfaces"]["drop"],
                             border_width=2, border_color=self.accent, corner_radius=12)
         drop.pack(fill="x", padx=pad, pady=6)
-        self._hint = ctk.CTkLabel(drop, text="Drag files here or click to add",
+        self._hint = ctk.CTkLabel(drop, text="Drop files here, or click Add Files",
                                   font=(theme.THEME["fonts"]["app"], theme.THEME["sizes"]["body"]),
                                   text_color=theme.THEME["text"]["muted"], cursor="hand2")
         self._hint.pack(pady=10)
@@ -98,6 +98,10 @@ class ConverterPage(ctk.CTkFrame):
 
         actions = ctk.CTkFrame(self, fg_color="transparent")
         actions.pack(fill="x", padx=pad, pady=8)
+        ctk.CTkButton(actions, text="Add Files...", command=self._pick,
+                      font=(theme.THEME["fonts"]["app"], theme.THEME["sizes"]["cta"], "bold"),
+                      fg_color=self.accent, hover_color=self.accent,
+                      text_color=theme.THEME["text"]["on_accent"]).pack(side="left", padx=(0, 12))
         ctk.CTkLabel(actions, text="Output folder").pack(side="left", padx=(0, 4))
         ctk.CTkEntry(actions, textvariable=self.out_dir, width=240).pack(side="left")
         ctk.CTkButton(actions, text="Browse", width=70, command=self._pick_out).pack(side="left", padx=6)
@@ -133,7 +137,8 @@ class ConverterPage(ctk.CTkFrame):
         self._add_paths([Path(p.strip("{}")) for p in self.winfo_toplevel().tk.splitlist(event.data)])
 
     def _pick(self):
-        self._add_paths([Path(p) for p in filedialog.askopenfilenames()])
+        self._add_paths([Path(p) for p in filedialog.askopenfilenames(
+            title="Add files", filetypes=filetypes_for(self.category))])
 
     def _add_paths(self, paths):
         for p in paths:

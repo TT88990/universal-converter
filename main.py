@@ -17,6 +17,20 @@ def selftest() -> int:
                 app.update_idletasks()
             assert len(app.pages) == len(CATEGORY_ORDER), "page count"
             assert len(app.sidebar.buttons) == len(CATEGORY_ORDER), "nav count"
+
+            def has_button(widget, text):
+                for child in widget.winfo_children():
+                    try:
+                        if child.cget("text") == text:
+                            return True
+                    except Exception:
+                        pass
+                    if has_button(child, text):
+                        return True
+                return False
+
+            for name in ("Images", "Documents", "Audio", "Video", "Text"):
+                assert has_button(app.pages[name], "Add Files..."), f"add button: {name}"
             page = app.pages["Images"]
             page._on_drop(SimpleNamespace(data="{" + str(png).replace("\\", "/") + "}"))
             app.update_idletasks()

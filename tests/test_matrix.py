@@ -1,4 +1,4 @@
-from omni.matrix import CATEGORIES, VALID_TARGETS
+from omni.matrix import CATEGORIES, VALID_TARGETS, filetypes_for
 
 
 def test_categories_present():
@@ -42,3 +42,14 @@ def test_wav_targets():
 
 def test_unknown_ext_empty():
     assert VALID_TARGETS("Images", "xyz") == []
+
+
+def test_filetypes_images_cover_sources():
+    types = dict(filetypes_for("Images"))
+    assert "*.png" in types["Supported files"]
+    assert "*.jpg" in types["Supported files"]
+    assert types["All files"] == "*.*"
+
+
+def test_filetypes_unknown_category_never_hides_files():
+    assert filetypes_for("Nope") == [("All files", "*.*")]

@@ -32,6 +32,13 @@ def VALID_TARGETS(category: str, src_ext: str) -> list[str]:
     return list(CATEGORIES.get(category, {}).get(src_ext, []))
 
 
+def filetypes_for(category: str) -> list[tuple[str, str]]:
+    exts = sorted({f"*.{e}" for e in CATEGORIES.get(category, {})})
+    if not exts:
+        return [("All files", "*.*")]
+    return [("Supported files", " ".join(exts)), ("All files", "*.*")]
+
+
 CONVERTERS: dict[str, dict[str, dict[str, object]]] = {
     "Images": {
         ext: {
